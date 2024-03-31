@@ -1,7 +1,10 @@
+# urls.py
+
 from django.urls import path
-from .views import signup, signup_success
+from . import views
 
 urlpatterns = [
-    path("signup/", signup, name="signup"),
-    path("signup/success", signup_success, name="signup_success"),
+    path("signup/", views.signup, name="signup"),
+    path("signup/success/", views.signup_success, name="signup_success"),
+    # 기타 URL 패턴...
 ]
