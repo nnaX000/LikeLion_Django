@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* 폰트 스타일을 지정 */
+            background: #f7f7f7; /* 배경색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .btn {
+            background-color: #cba3d6; /* 버튼 배경색 */
+            color: white; /* 텍스트 색상 */
+            padding: 14px 28px; /* 패딩 */
+            margin: 10px; /* 주변 여백 */
+            border: none; /* 테두리 제거 */
+            cursor: pointer; /* 마우스 오버 시 커서 변경 */
+            font-size: 16px; /* 폰트 크기 */
+            border-radius: 5px; /* 테두리 둥글게 */
+            transition: all 0.3s; /* 호버 애니메이션 속도 */
+        }
+        .btn:hover {
+            background-color: #45a049; /* 호버 시 배경색 */
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <!-- 로그인 폼 필드들... -->
+            <input class="btn" type="submit" value="Login">
+        </form>
+        <a class="btn" href="{% url 'signup' %}">Join</a>
+    </div>
+</body>
+</html>

@@ -1,19 +1,79 @@
-<!-- profile.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+        }
+        .profile-container {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 400px;
+        }
+        .profile-field {
+            margin-bottom: 15px;
+        }
+        .profile-field label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .profile-field input {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: calc(100% - 22px); /* Calculate width, accounting for padding and border */
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <h1>User Profile</h1>
-    <p><strong>ID:</strong> {{ user.id }}</p>
-    <p><strong>Name:</strong> {{ user.name }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Major:</strong> {{ user.major }}</p>
-    <p><strong>Nickname:</strong> {{ user.nickname }}</p>
-    <p><strong>Phone Number:</strong> {{ user.phone_number }}</p>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <form action="{% url 'profile_update' %}" method="post">
+            {% csrf_token %}
+            <div class="profile-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{ user.name }}">
+            </div>
+            <div class="profile-field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}">
+            </div>
+            <div class="profile-field">
+                <label for="major">Major:</label>
+                <input type="text" id="major" name="major" value="{{ user.major }}">
+            </div>
+            <div class="profile-field">
+                <label for="nickname">Nickname:</label>
+                <input type="text" id="nickname" name="nickname" value="{{ user.nickname }}">
+            </div>
+            <div class="profile-field">
+                <label for="phone_number">Phone Number:</label>
+                <input type="tel" id="phone_number" name="phone_number" value="{{ user.phone_number }}">
+            </div>
+            <button type="submit" class="button">Update Profile</button>
+        </form>
+    </div>
 </body>
 </html>
+
