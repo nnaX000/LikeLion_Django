@@ -49,7 +49,7 @@
 <body>
     <div class="profile-container">
         <h1>User Profile</h1>
-        <form action="{% url 'profile_update' %}" method="post">
+        <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
             <div class="profile-field">
                 <label for="name">Name:</label>
@@ -71,7 +71,7 @@
                 <label for="phone_number">Phone Number:</label>
                 <input type="tel" id="phone_number" name="phone_number" value="{{ user.phone_number }}">
             </div>
-            <button type="submit" class="button">Update Profile</button>
+            <a class="btn" href="{% url 'login' %}">Join</a>
         </form>
     </div>
 </body>

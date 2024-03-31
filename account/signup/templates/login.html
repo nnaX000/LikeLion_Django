@@ -38,7 +38,7 @@
 </head>
 <body>
     <div class="form-container">
-        <form method="post" action="{% url 'login' %}">
+        <form method="post" action="{% url 'loginForm' %}">
             {% csrf_token %}
             <!-- 로그인 폼 필드들... -->
             <input class="btn" type="submit" value="Login">

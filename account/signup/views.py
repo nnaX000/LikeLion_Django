@@ -8,9 +8,23 @@ from django.shortcuts import redirect
 # views.py에서 로그인 페이지를 렌더링하는 뷰를 추가합니다.
 
 
+def logout(request):
+    # 로그인 처리 로직이 여기에 옵니다. (예시로만 제공됩니다)
+    return render(
+        request, "logout.html"
+    )  # 'login.html'은 로그인 페이지의 템플릿입니다.
+
+
 def login_view(request):
     # 로그인 처리 로직이 여기에 옵니다. (예시로만 제공됩니다)
     return render(request, "login.html")  # 'login.html'은 로그인 페이지의 템플릿입니다.
+
+
+def login(request):
+    # 로그인 처리 로직이 여기에 옵니다. (예시로만 제공됩니다)
+    return render(
+        request, "loginForm.html"
+    )  # 'login.html'은 로그인 페이지의 템플릿입니다.
 
 
 def root_redirect(request):
