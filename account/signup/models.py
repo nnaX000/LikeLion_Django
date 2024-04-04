@@ -36,6 +36,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=255)
+    pwd = models.CharField(max_length=50, default="default_value")
     name = models.CharField(max_length=100)
     major = models.CharField(max_length=100)
     nickname = models.CharField(max_length=100)
@@ -50,6 +51,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         "name",
         "major",
         "nickname",
+        "pwd",
     ]  # 'email'과 'password'는 기본적으로 요구됨
 
     def __str__(self):
