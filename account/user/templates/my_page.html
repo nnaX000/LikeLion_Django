@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9e6e6; /* 아이보리색 */
+            background-color: #f9e6e6; /* Ivory color */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,7 +18,7 @@
         .container {
             width: 400px;
             padding: 40px;
-            background-color: #ffd6d6; /* 핑크색 */
+            background-color: #ffd6d6; /* Pink color */
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
@@ -57,16 +57,22 @@
         input[type="file"] {
             padding: 5px;
         }
+        .image-preview {
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Update your profile</h1>
-        <form action="{% url 'my_profile' %}" method="post" enctype="multipart/form-data">
+        <form id="profile-form" action="{% url 'my_profile' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_image">Profile Picture:</label>
                 <input type="file" name="image" id="id_image" accept="image/*">
+                <img id="image-preview" src="#" alt="Image preview" class="image-preview" style="display: none;">
             </div>
             <div class="form-group">
                 <label for="id_keyword">Keyword:</label>
@@ -80,9 +86,26 @@
                 <label for="id_hobbies">Hobbies:</label>
                 <textarea name="hobbies" id="id_hobbies" placeholder="What are your hobbies?"></textarea>
             </div>
-            <button type="submit">Save</button>
+            <button id="save-button" type="submit" style="display: none;">Save</button>
         </form>
+        <button id="choose-file-button">Choose File</button>
     </div>
+
+    <script>
+        document.getElementById('id_image').addEventListener('change', function(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var imagePreview = document.getElementById('image-preview');
+                imagePreview.src = reader.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+            document.getElementById('save-button').style.display = 'block';
+        });
+        
+        document.getElementById('choose-file-button').addEventListener('click', function() {
+            document.getElementById('id_image').click();
+        });
+    </script>
 </body>
 </html>
-
