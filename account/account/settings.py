@@ -112,6 +112,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+# 세션 쿠키가 브라우저 종료 시 삭제되지 않도록 설정
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# 세션 쿠키의 유효 기간 설정 (초 단위)
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

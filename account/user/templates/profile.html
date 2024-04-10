@@ -68,9 +68,9 @@
             <p><strong>ID:</strong> {{ user.user_id }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
         </div>
-        <form action="{% url 'logout' %}" method="post">
+        <form action="{% url 'home' %}" method="post">
             {% csrf_token %}
-            <button type="submit">Logout</button>
+            <button type="submit">back to home</button>
         </form>
     </div>
 </body>

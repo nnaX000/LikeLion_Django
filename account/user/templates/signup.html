@@ -1,7 +1,136 @@
-<h2>Sign up</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Join</button>
-</form>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9e6e6; /* Ivory color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            padding: 40px;
+            background-color: #ffd6d6; /* Light pink */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* Reduced margin-bottom */
+            border: 1px solid #ecadc6;
+            border-radius: 5px;
+            box-sizing: border-box; /* Includes padding and border in the element's width */
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-bottom: 15px; /* Adds space after the error message */
+        }
+        button {
+            padding: 10px;
+            color: white;
+            background-color: #ecadc6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #db9191; /* Lighter pink */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form method="post" action="{% url 'signup' %}">  <!-- Make sure the action URL is correct -->
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div>
+                {{ form.user_id.label_tag }}
+                {{ form.user_id }}
+                {% if form.user_id.errors %}
+                    <div class="error-message">
+                        {{ form.user_id.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error-message">
+                        {{ form.username.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error-message">
+                        {{ form.email.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.major.label_tag }}
+                {{ form.major }}
+                {% if form.major.errors %}
+                    <div class="error-message">
+                        {{ form.major.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.nickname.label_tag }}
+                {{ form.nickname }}
+                {% if form.nickname.errors %}
+                    <div class="error-message">
+                        {{ form.nickname.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="error-message">
+                        {{ form.password1.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="error-message">
+                        {{ form.password2.errors.as_text }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit">Join</button>
+        </form>
+    </div>
+</body>
+</html>

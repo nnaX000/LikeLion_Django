@@ -9,51 +9,70 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9e6e6; /* 아이보리색 */
+            background-color: #f9e6e6; /* Ivory color */
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Aligns children vertically */
             align-items: center;
+            justify-content: center;
             height: 100vh;
         }
-        .container {
-            width: 400px;
-            padding: 40px;
-            background-color: #ffd6d6; /* 핑크색 */
+        .welcome-container {
+            width: 500px;
+            padding: 30px;
+            font-size: 25px;
+            background-color: #efe7c9; /* Pink color */
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .container {
+            width: 600px;
+            padding: 40px;
+            background-color: #ffd6d6; /* Pink color */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         h1 {
             color: #333;
-            text-align: center;
             margin-bottom: 30px;
         }
         .link-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Changes the alignment to center from space-between */
+            gap: 30px; /* Adds a small gap between the buttons */
+            margin-top: 20px; /* Adds space between links and the welcome message or title */
         }
         a {
             text-decoration: none;
-            color: #ecadc6; /* 핑크색 */
+            color: #ecadc6; /* Pink color */
             font-weight: bold;
             padding: 10px 20px;
-            border: 2px solid #ecadc6; /* 핑크색 */
+            border: 2px solid #ecadc6; /* Pink color border */
             border-radius: 5px;
             transition: all 0.3s ease;
         }
         a:hover {
-            background-color: #ecadc6; /* 핑크색 */
-            color: #f4f5d7;
+            background-color: #ecadc6; /* Pink color */
+            color: #f4f5d7; /* Off-white text */
         }
     </style>
 </head>
 <body>
+    {% if user.is_authenticated %}
+    <p class="welcome-container">{{ user.username }}님 환영합니다👻</p>
+    {% endif %}
     <div class="container">
-        <h1>Welcome to Our Site!</h1>
+        <h1>Welcome to Nayoung's Site!</h1>
         <div class="link-container">
-            <a href="{% url 'login' %}">Login</a>
-            <a href="{% url 'signup' %}">Sign Up</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'my_profile' %}">마이페이지</a>
+            <a href="{% url 'logout' %}">로그아웃</a>
+            {% else %}
+            <a href="{% url 'login' %}">로그인</a>
+            <a href="{% url 'signup' %}">회원가입</a>
+            {% endif %}
         </div>
     </div>
 </body>
 </html>
-
