@@ -67,7 +67,7 @@
 <body>
     <div class="container">
         <h1>Update your profile</h1>
-        <form id="profile-form" action="{% url 'my_profile' %}" method="post" enctype="multipart/form-data">
+        <form id="profile-form" action="{% url 'my_page' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_image">Profile Picture:</label>
@@ -107,7 +107,7 @@
             document.getElementById('id_image').click();
         });
     </script>
-
+    
     <div class="messages">
     {% if messages %}
         {% for message in messages %}

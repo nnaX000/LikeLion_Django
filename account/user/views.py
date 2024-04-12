@@ -60,48 +60,83 @@ def my_profile_view(request):
         form_data = request.POST
         image_file = request.FILES.get("image")
 
-        # Processing image upload separately
         if image_file:
             fs = FileSystemStorage()
             filename = fs.save(image_file.name, image_file)
-            image_url = fs.url(filename)
-            profile.image_url = image_url  # Assume your model has an `image_url` field to store the image path
+            profile.image = filename  # 파일 경로를 저장
+            # profile.image.save(filename, image_file, save=True) # 이 방식도 사용할 수 있음
 
-        # Updating text fields
+            profile.keyword = form_data.get("keyword", profile.keyword)
+            profile.mbti = form_data.get("mbti", profile.mbti)
+            profile.hobbies = form_data.get("hobbies", profile.hobbies)
+            profile.save()
+
+            messages.success(request, "프로필 정보가 성공적으로 저장되었습니다!")
+            return redirect(reverse("home"))  # 홈으로 리디렉션
+
+    # GET 요청 시 사용자 정보를 폼에 미리 채워서 전달
+    return render(request, "my_profile.html", {"profile": profile})
+
+
+@login_required
+def profile_redirect(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    if not created and (
+        profile.keyword or profile.mbti or profile.hobbies
+    ):  # 정보가 이미 있는 경우
+        return redirect(
+            "my_profile"
+        )  # 'my_profile'은 프로필을 보여주는 페이지의 URL name
+    else:
+        return redirect("my_page")  # 'my_page'는 프로필을 설정하는 페이지의 URL name
+
+
+@login_required
+def my_profile(request):
+    profile = UserProfile.objects.get(user=request.user)
+    return render(request, "my_profile.html", {"profile": profile})
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
+from .models import UserProfile  # Make sure to import your UserProfile model correctly
+
+
+@login_required
+def my_page(request):
+    profile = UserProfile.objects.get_or_create(user=request.user)[0]
+
+    if request.method == "POST":
+        form_data = request.POST
+        image_file = request.FILES.get("image")
+
+        if image_file:
+            fs = FileSystemStorage()
+            filename = fs.save(image_file.name, image_file)
+            profile.image = (
+                filename  # Save relative path to the image in the UserProfile
+            )
+
+        # Update text fields
         profile.keyword = form_data.get(
             "keyword", profile.keyword
-        )  # Fallback to existing value if not provided
+        )  # Use existing value if field is empty
         profile.mbti = form_data.get("mbti", profile.mbti)
         profile.hobbies = form_data.get("hobbies", profile.hobbies)
         profile.save()
 
-        # Save the form data to session for potential re-use or in subsequent GET requests
-        request.session["profile_form_data"] = form_data.dict()
-        request.session["image_url"] = getattr(profile, "image_url", "")
-        messages.success(request, "프로필 정보가 성공적으로 저장되었습니다!")
-        # Redirect after POST to avoid resubmission issues
-        return redirect(
-            reverse("home")
-        )  # Assuming 'my_profile' is the name of the URL pattern for this view
+        return redirect("my_profile")  # Redirect to the 'my_profile' page after POST
 
-    else:  # GET 요청 시
-        # 폼 데이터를 프로필 정보로 초기화
-        form_data = {
-            "keyword": profile.keyword,
-            "mbti": profile.mbti,
-            "hobbies": profile.hobbies,
-        }
-        image_url = getattr(profile, "image_url", "")
-
-    # Load existing data to the form if not a POST request or after saving data
-    form_data = request.session.get(
-        "profile_form_data",
-        {"keyword": profile.keyword, "mbti": profile.mbti, "hobbies": profile.hobbies},
-    )
-    image_url = request.session.get("image_url", getattr(profile, "image_url", ""))
+    # Load initial form data from the existing profile
+    initial_data = {
+        "keyword": profile.keyword,
+        "mbti": profile.mbti,
+        "hobbies": profile.hobbies,
+        "image_url": profile.image.url if profile.image else None,
+    }
 
     return render(
-        request,
-        "my_page.html",
-        {"profile": profile, "form_data": form_data, "image_url": image_url},
-    )
+        request, "my_page.html", initial_data
+    )  # Pass initial data to the form in GET request

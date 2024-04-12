@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import path, include
 from user import views as user_views  # myapp의 views를 임포트합니다.
 from django.contrib.auth.views import LoginView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,4 +29,8 @@ urlpatterns = [
     ),  # 가정: `signup` 뷰가 `myapp/views.py`에 있음
     path("", user_views.home, name="home"),  # 홈 페이지를 위한 URL 패턴
     path("user/", include("user.urls")),  # user 앱의 urls.py를 포함시킵니다.
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

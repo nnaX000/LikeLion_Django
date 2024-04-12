@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9e6e6; /* Ivory color similar to the update form */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            padding: 40px;
+            background-color: #ffd6d6; /* Pink color similar to the update form */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center align the text and content */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .profile-info {
+            text-align: center; /* Center-align the labels and values */
+            margin-bottom: 20px; /* Provide some bottom margin for spacing */
+        }
+        .profile-info strong {
+            color: #555;
+            font-size: 16px;
+            display: block; /* Make these labels block level for better control */
+        }
+        .profile-info span {
+            color: #666;
+            font-size: 14px;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 20px auto; /* Center align the profile picture */
+            display: block;
+            object-fit: cover;
+        }
+        button {
+            width: 100%;
+            padding: 8px 16px;
+            background-color: #ecadc6; /* Button color similar to the form */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background-color: #db9191; /* Lighter pink for hover state */
+        }
+    </style>
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <h1>My Profile</h1>
+        {% if profile.image %}
+            <img src="{{ profile.image.url }}" alt="Profile Image" class="profile-pic">
+        {% else %}
+            <img src="{% static 'images/default-profile.jpg' %}" alt="Default Image" class="profile-pic">
+        {% endif %}
+        <div class="profile-info">
+            <strong>Keyword</strong>
+            <span>{{ profile.keyword|default:"Not set" }}</span>
+        </div>
+        <div class="profile-info">
+            <strong>MBTI</strong>
+            <span>{{ profile.mbti|default:"Not set" }}</span>
+        </div>
+        <div class="profile-info">
+            <strong>Hobbies</strong>
+            <span>{{ profile.hobbies|default:"Not set" }}</span>
+        </div>
+    
+        <button onclick="location.href='{% url 'home' %}';">Back to Home</button>
+    </div>
+    
+</body>
+</html>
