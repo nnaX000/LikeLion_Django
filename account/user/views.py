@@ -60,25 +60,46 @@ def my_profile_view(request):
         form_data = request.POST
         image_file = request.FILES.get("image")
 
+        # Processing image upload separately
         if image_file:
             fs = FileSystemStorage()
             filename = fs.save(image_file.name, image_file)
             image_url = fs.url(filename)
-            # Save the form data to session if you want to retain it after POST
-            request.session["profile_form_data"] = form_data
-            request.session["image_url"] = image_url
-            return redirect(reverse("my_profile"))
+            profile.image_url = image_url  # Assume your model has an `image_url` field to store the image path
 
-        # Final saving process or updating the profile
-        profile.keyword = form_data.get("keyword", "")
-        profile.mbti = form_data.get("mbti", "")
-        profile.hobbies = form_data.get("hobbies", "")
+        # Updating text fields
+        profile.keyword = form_data.get(
+            "keyword", profile.keyword
+        )  # Fallback to existing value if not provided
+        profile.mbti = form_data.get("mbti", profile.mbti)
+        profile.hobbies = form_data.get("hobbies", profile.hobbies)
         profile.save()
-        return redirect("home")  # Redirect to the home page
 
-    # Load existing data to the form
-    form_data = request.session.get("profile_form_data", {})
-    image_url = request.session.get("image_url", "")
+        # Save the form data to session for potential re-use or in subsequent GET requests
+        request.session["profile_form_data"] = form_data.dict()
+        request.session["image_url"] = getattr(profile, "image_url", "")
+        messages.success(request, "프로필 정보가 성공적으로 저장되었습니다!")
+        # Redirect after POST to avoid resubmission issues
+        return redirect(
+            reverse("home")
+        )  # Assuming 'my_profile' is the name of the URL pattern for this view
+
+    else:  # GET 요청 시
+        # 폼 데이터를 프로필 정보로 초기화
+        form_data = {
+            "keyword": profile.keyword,
+            "mbti": profile.mbti,
+            "hobbies": profile.hobbies,
+        }
+        image_url = getattr(profile, "image_url", "")
+
+    # Load existing data to the form if not a POST request or after saving data
+    form_data = request.session.get(
+        "profile_form_data",
+        {"keyword": profile.keyword, "mbti": profile.mbti, "hobbies": profile.hobbies},
+    )
+    image_url = request.session.get("image_url", getattr(profile, "image_url", ""))
+
     return render(
         request,
         "my_page.html",

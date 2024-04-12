@@ -107,5 +107,14 @@
             document.getElementById('id_image').click();
         });
     </script>
+
+    <div class="messages">
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: red; text-align: center;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    </div>
+
 </body>
 </html>
