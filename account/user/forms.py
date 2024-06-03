@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
+from .models import Post
+from django import forms
 
 
 class SignUpForm(UserCreationForm):
@@ -22,3 +24,9 @@ class SignUpForm(UserCreationForm):
 class LoginForm(forms.Form):
     user_id = forms.CharField(label="User ID")
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["title", "content"]

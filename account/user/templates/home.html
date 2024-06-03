@@ -62,12 +62,23 @@
     {% if user.is_authenticated %}
     <p class="welcome-container">{{ user.username }}님 환영합니다👻</p>
     {% endif %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div class="container">
         <h1>Welcome to Nayoung's Site!</h1>
         <div class="link-container">
             {% if user.is_authenticated %}
             <a href="{% url 'profile_redirect' %}">마이페이지</a>
             <a href="{% url 'logout' %}">로그아웃</a>
+            <a href="{% url 'post_upload' %}">게시물 올리기</a>
+            <a href="{% url 'feed' %}">피드 보기</a>
             {% else %}
             <a href="{% url 'login' %}">로그인</a>
             <a href="{% url 'signup' %}">회원가입</a>

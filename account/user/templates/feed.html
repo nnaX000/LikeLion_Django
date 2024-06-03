@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9e6e6; /* Ivory color */
+            display: flex;
+            flex-direction: column; /* Aligns children vertically */
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 800px;
+            padding: 40px;
+            background-color: #ffd6d6; /* Light Pink color */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .post {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #efe7c9; /* Pink color */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            color: #333;
+        }
+        .content {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.5;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #ecadc6; /* Pink color */
+            font-weight: bold;
+        }
+        a:hover {
+            color: #da92a7; /* Darker pink */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feed</h1>
+        {% for post in posts %}
+        <div class="post">
+            <h2>{{ post.title }}</h2>
+            <p class="content">{{ post.content }}</p>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post image">
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

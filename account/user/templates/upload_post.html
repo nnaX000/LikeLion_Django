@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9e6e6; /* Ivory color */
+            display: flex;
+            flex-direction: column; /* Aligns children vertically */
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            width: 600px;
+            padding: 40px;
+            background-color: #ffd6d6; /* Light Pink color */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, textarea {
+            width: 90%;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 150px;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #ecadc6; /* Pink color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #da92a7; /* Darker pink */
+        }
+        #preview img {
+            max-width: 100%; /* Adjusts image size to the container */
+            max-height: 300px; /* Limits image height */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload a New Post</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="file" id="imageInput" name="image" accept="image/*" onchange="previewImage();">
+            <div id="preview"></div>  <!-- Image preview container -->
+            <button type="submit">Upload Post</button>
+        </form>
+    </div>
+    <script>
+        function previewImage() {
+            var file = document.getElementById("imageInput").files[0];
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                var imgElement = document.createElement("img");
+                imgElement.src = e.target.result;
+                imgElement.style.maxWidth = "300px";  // Optional: Limit image width
+                imgElement.style.maxHeight = "300px"; // Optional: Limit image height
+                document.getElementById("preview").innerHTML = ''; // Clear previous previews
+                document.getElementById("preview").appendChild(imgElement); // Append new preview
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>

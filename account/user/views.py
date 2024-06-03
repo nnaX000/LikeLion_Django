@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
+from .forms import PostForm
+from django.contrib import messages
 
 
 def home(request):
@@ -140,3 +142,41 @@ def my_page(request):
     return render(
         request, "my_page.html", initial_data
     )  # Pass initial data to the form in GET request
+
+
+from .models import Post
+
+
+@login_required
+def post_upload(request):
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = (
+                request.user
+            )  # Assuming your Post model has an 'author' attribute
+            post.save()
+
+            # Handle the image file separately if needed
+            image_file = request.FILES.get("image")
+            if image_file:
+                fs = FileSystemStorage()
+                filename = fs.save(image_file.name, image_file)
+                post.image = filename
+                post.save()
+
+            # 메시지 추가
+            messages.success(request, "포스트가 성공적으로 등록되었습니다!")
+
+            return redirect("home")  # Redirect to home or a specific post detail view
+    else:
+        form = PostForm()
+
+    return render(request, "upload_post.html", {"form": form})
+
+
+@login_required
+def feed(request):
+    posts = Post.objects.all().order_by("-id")  # Get all posts ordered by most recent
+    return render(request, "feed.html", {"posts": posts})
